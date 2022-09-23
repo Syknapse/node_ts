@@ -1,5 +1,7 @@
+// normal syntax
 // const express = require('express)
-// const ROuter = express.Router
+// const Router = express.Router
+// TypeScript syntax
 import { Router } from 'express'
 
 import { createTodo } from '../controllers/todos'

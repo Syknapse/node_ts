@@ -1,44 +1,57 @@
 import { RequestHandler } from 'express'
+import { randomUUID } from 'crypto'
 
 import { Todo } from '../models/todo'
+import * as db from '../dynamo'
 
-const TODOS: Todo[] = []
+export const createTodo: RequestHandler = async (req, res, next) => {
+  try {
+    const text = (req.body as { text: string }).text
+    const id = randomUUID({ disableEntropyCache: true })
+    const dateCreated = Date.now()
+    const newTodo = new Todo(id, text, dateCreated)
 
-export const createTodo: RequestHandler = (req, res, next) => {
-  const text = (req.body as { text: string }).text
-  const newTodo = new Todo(Math.random().toString(), text)
-
-  TODOS.push(newTodo)
-
-  res.status(201).json({ message: 'Todo created', createdTodo: newTodo })
-}
-
-export const getTodos: RequestHandler = (req, res, next) => {
-  res.json({ todos: TODOS })
-}
-
-export const updateTodo: RequestHandler<{ id: string }> = (req, res, next) => {
-  const todoId = req.params.id
-  const updatedText = (req.body as { text: string }).text
-  const todoIndex = TODOS.findIndex(todo => todo.id === todoId)
-
-  if (todoIndex < 0) {
-    throw new Error('Could not find todo.')
+    await db.createOrUpdateTodo(newTodo)
+    res.status(201).json({ message: 'Todo created', todo: newTodo })
+  } catch (error) {
+    console.error('createTodo error: ', error)
+    next(error)
   }
-
-  TODOS[todoIndex] = new Todo(TODOS[todoIndex].id, updatedText)
-
-  res.json({ message: 'Updated todo', updateTodo: TODOS[todoIndex] })
 }
 
-export const deleteTodo: RequestHandler<{ id: string }> = (req, res, next) => {
-  const todoId = req.params.id
-  const todoIndex = TODOS.findIndex(todo => todo.id === todoId)
-
-  if (todoIndex < 0) {
-    throw new Error('Could not find todo.')
+export const getTodos: RequestHandler = async (req, res, next) => {
+  try {
+    const data = await db.getTodos()
+    res.json({ todos: data.Items })
+  } catch (error) {
+    console.error('getTodos error: ', error)
+    next(error)
   }
+}
 
-  TODOS.splice(todoIndex, 1)
-  res.json({ message: 'Deleted todo' })
+export const updateTodo: RequestHandler<{ id: string }> = async (req, res, next) => {
+  try {
+    const id = req.params.id
+    const updatedText = (req.body as { text: string }).text
+    const dateCreated = (req.body as { dateCreated: number }).dateCreated
+    const updatedTodo = new Todo(id, updatedText, dateCreated)
+
+    await db.createOrUpdateTodo(updatedTodo)
+    res.status(201).json({ message: 'Todo Updated', todo: updatedTodo })
+  } catch (error) {
+    console.error('updateTodo error: ', error)
+    next(error)
+  }
+}
+
+export const deleteTodo: RequestHandler<{ id: string }> = async (req, res, next) => {
+  try {
+    const id = req.params.id
+
+    await db.deleteTodo(id)
+    res.status(201).json({ message: 'Todo deleted', id })
+  } catch (error) {
+    console.error('deleteTodo error: ', error)
+    next(error)
+  }
 }
