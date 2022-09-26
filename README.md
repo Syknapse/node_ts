@@ -14,7 +14,7 @@ Use Postman to make requests
 
 Add new todo : POST `http://localhost:8080/todo` body with text `{ "text": "example text" }`  
 View all todos: GET `http://localhost:8080/todo`  
-Edit a todo: PATCH `http://localhost:8080/todo/:id` body with new text body with text `{ "text": "modified text" }`  
+Edit a todo: PATCH `http://localhost:8080/todo/:id` body with new text `{ "text": "modified text" }`  
 Delete a todo: DELETE `http://localhost:8080/todo/:id`
 
 ## Documentation
