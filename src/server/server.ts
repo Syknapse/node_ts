@@ -8,12 +8,12 @@ dotenv.config()
 import todoRoutes from './routes/todos'
 
 const app = express()
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 8000
 
 app.use(json()) // populates the body of req.body with parsed json of any json data it finds
 // app.use(cors())
 
-app.get('/', (req, res) => res.send('Hello world'))
+app.get('/', (req, res) => res.send('Hello world from server'))
 
 app.use('/todos', todoRoutes)
 
