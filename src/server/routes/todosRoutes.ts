@@ -4,10 +4,10 @@
 // TypeScript syntax
 import { Router } from 'express'
 
-import { createTodo } from '../controllers/todos'
-import { getTodos } from '../controllers/todos'
-import { updateTodo } from '../controllers/todos'
-import { deleteTodo } from '../controllers/todos'
+import { createTodo } from '../controllers/todosController'
+import { getTodos } from '../controllers/todosController'
+import { updateTodo } from '../controllers/todosController'
+import { deleteTodo } from '../controllers/todosController'
 
 const router = Router()
 

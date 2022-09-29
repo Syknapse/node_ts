@@ -30,8 +30,8 @@
   },
   "scripts": {
     "start:backend": "nodemon dist/server/server.js",
-    "start:frontend": "webpack-dev-server --mode development --open --hot",
-    "watch": "npx tsc -w",
+    "start:frontend": "webpack-dev-server --mode development --hot",
+    "watch": "rm -rf ./dist && npx tsc -w",
     "build": "webpack --mode production"
   }
 }

@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 import { randomUUID } from 'crypto'
 
-import { Todo } from '../models/todo'
+import { Todo } from '../../models/todoModel'
 import * as db from '../dynamo'
 
 export const createTodo: RequestHandler = async (req, res, next) => {
@@ -9,7 +9,8 @@ export const createTodo: RequestHandler = async (req, res, next) => {
     const text = (req.body as { text: string }).text
     const id = randomUUID({ disableEntropyCache: true })
     const dateCreated = Date.now()
-    const newTodo = new Todo(id, text, dateCreated)
+    const completed = false
+    const newTodo = new Todo(id, text, dateCreated, completed)
 
     await db.createOrUpdateTodo(newTodo)
     res.status(201).json({ message: 'Todo created', todo: newTodo })
@@ -34,7 +35,8 @@ export const updateTodo: RequestHandler<{ id: string }> = async (req, res, next)
     const id = req.params.id
     const updatedText = (req.body as { text: string }).text
     const dateCreated = (req.body as { dateCreated: number }).dateCreated
-    const updatedTodo = new Todo(id, updatedText, dateCreated)
+    const completed = (req.body as { completed: boolean }).completed
+    const updatedTodo = new Todo(id, updatedText, dateCreated, completed)
 
     await db.createOrUpdateTodo(updatedTodo)
     res.status(201).json({ message: 'Todo Updated', todo: updatedTodo })
