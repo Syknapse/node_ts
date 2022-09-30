@@ -35,3 +35,7 @@ Delete a todo: DELETE `http://localhost:8000/todo/:id`
 [Getting started with DynamoDB and AWS SDKs](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.html)
 [Webpack documentation](https://webpack.js.org/guides/)
 [Webpack config with TypeScript](https://webpack.js.org/configuration/configuration-languages/#typescript)
+[Using CSS in react + TypeScript + Webpack](https://www.carlrippon.com/using-css-react-typescript-with-webpack5/)
+[CSS Loader](https://github.com/webpack-contrib/css-loader)
+
+More detailed notes about the development in the [Development Notes file](./dev-notes.md)

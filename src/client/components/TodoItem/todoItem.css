@@ -1,0 +1,19 @@
+.todo-item {
+  display: flex;
+}
+
+.todo-item .completed {
+  opacity: 0.5;
+}
+
+.completed-button {
+  background: green;
+}
+
+.completed .completed-button {
+  background: red;
+}
+
+.completed .text {
+  text-decoration: line-through;
+}
