@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Todo } from 'models/todoModel'
-import { TodoItem } from './components'
+import { AddModal, Button, TodoItem } from './components'
+import { Add, Cross } from './icons'
 import './App.css'
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([])
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
+
   useEffect(() => {
     fetch(`${'http://localhost:8000'}/todos`)
       .then(response => response.json())
@@ -28,6 +31,14 @@ const App: React.FC = () => {
           />
         ))}
       </ul>
+      <AddModal
+        isOpen={isOpenModal}
+        close={() => setIsOpenModal(false)}
+        addTodo={() => console.log('Adding todo .......')}
+      />
+      <Button className="add-button" isRound onClick={() => setIsOpenModal(!isOpenModal)}>
+        {isOpenModal ? <Cross className="add-icon" /> : <Add className="add-icon" />}
+      </Button>
     </>
   )
 }
