@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Todo } from 'models/todoModel'
 import { TodoItem } from './components'
+import './App.css'
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([])
@@ -12,8 +13,8 @@ const App: React.FC = () => {
 
   return (
     <>
-      <h1>Hello World from React</h1>
-      <ul>
+      <h1 className="title">Todo List</h1>
+      <ul className="list">
         {todos.map((todo, i) => (
           <TodoItem
             key={i}

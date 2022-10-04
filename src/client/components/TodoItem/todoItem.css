@@ -1,19 +1,45 @@
 .todo-item {
+  font-size: 1.1rem;
   display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 46rem;
+  background: rgb(128 128 128 / 8%);
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px 1px rgb(0 0 0 / 15%);
 }
 
-.todo-item .completed {
-  opacity: 0.5;
+.todo-item .todo-button {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: 1rem;
+  border: 1px solid rgb(205 201 201);
+}
+
+.todo-icon {
+  width: 1.125rem;
+  height: 1.125rem;
 }
 
 .completed-button {
-  background: green;
+  background: rgb(0 128 0 / 24%);
 }
 
 .completed .completed-button {
-  background: red;
+  background: rgb(255 0 0 / 23%);
+}
+
+.text {
+  margin-right: auto;
 }
 
 .completed .text {
   text-decoration: line-through;
+  opacity: 0.5;
 }
