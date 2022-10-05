@@ -1,23 +1,24 @@
 import React, { useState } from 'react'
 import clsx from 'clsx'
+import { Todo } from 'models/todoModel'
 import { Button } from '../../components'
 import { Add } from '../../icons'
 import './addModal.css'
 
 interface IAddModalProps {
   isOpen: boolean
+  value: string
+  setValue: React.Dispatch<React.SetStateAction<string>>
+  editingTodo: Todo | null
   close: () => void
-  addTodo: (value: string) => void
+  submit: () => void
 }
 
-const AddModal: React.FC<IAddModalProps> = ({ isOpen, close, addTodo }) => {
-  const [value, setValue] = useState<string>('')
-
+const AddModal: React.FC<IAddModalProps> = ({ isOpen, value, setValue, editingTodo, close, submit }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    addTodo(value)
+    submit()
     close()
-    setValue('')
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => setValue(event.currentTarget.value)
@@ -26,9 +27,9 @@ const AddModal: React.FC<IAddModalProps> = ({ isOpen, close, addTodo }) => {
     <form className={clsx('add-modal', isOpen && 'open')} onSubmit={handleSubmit}>
       <div className="backdrop" onClick={close}></div>
       <div className="modal">
-        <h2 className="modal-title">Add your todo</h2>
+        <h2 className="modal-title">{!!editingTodo ? 'Edit your todo' : 'Add your todo'}</h2>
         <input className="modal-input" type="text" onChange={handleChange} value={value} />
-        <Button className="modal-button" type="submit" disabled={!value}>
+        <Button className="modal-button" type="submit" disabled={!value || editingTodo?.text === value}>
           Confirm
           <Add className="modal-icon" />
         </Button>

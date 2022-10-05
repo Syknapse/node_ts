@@ -29,7 +29,7 @@ const TodoItem: React.FC<ITodoItemProps> = ({
         <Button
           className={clsx('todo-button', 'completed-button')}
           isRound
-          onClick={() => onToggleCompleteness({ id, text, dateCreated, completed })}
+          onClick={() => onToggleCompleteness({ id, text, dateCreated, completed: !completed })}
         >
           {completed ? <RecFilled className="todo-icon" /> : <RecOutlined className="todo-icon" />}
         </Button>

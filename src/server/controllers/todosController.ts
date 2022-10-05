@@ -4,6 +4,16 @@ import { randomUUID } from 'crypto'
 import { Todo } from '../../models/todoModel'
 import * as db from '../dynamo'
 
+export const getTodos: RequestHandler = async (req, res, next) => {
+  try {
+    const data = await db.getTodos()
+    res.json({ todos: data.Items })
+  } catch (error) {
+    console.error('getTodos error: ', error)
+    next(error)
+  }
+}
+
 export const createTodo: RequestHandler = async (req, res, next) => {
   try {
     const text = (req.body as { text: string }).text
@@ -13,19 +23,10 @@ export const createTodo: RequestHandler = async (req, res, next) => {
     const newTodo = new Todo(id, text, dateCreated, completed)
 
     await db.createOrUpdateTodo(newTodo)
-    res.status(201).json({ message: 'Todo created', todo: newTodo })
+    const data = await db.getTodos()
+    res.status(201).json({ message: 'Todo created', todo: newTodo, todos: data.Items })
   } catch (error) {
     console.error('createTodo error: ', error)
-    next(error)
-  }
-}
-
-export const getTodos: RequestHandler = async (req, res, next) => {
-  try {
-    const data = await db.getTodos()
-    res.json({ todos: data.Items })
-  } catch (error) {
-    console.error('getTodos error: ', error)
     next(error)
   }
 }
@@ -39,7 +40,8 @@ export const updateTodo: RequestHandler<{ id: string }> = async (req, res, next)
     const updatedTodo = new Todo(id, updatedText, dateCreated, completed)
 
     await db.createOrUpdateTodo(updatedTodo)
-    res.status(201).json({ message: 'Todo Updated', todo: updatedTodo })
+    const data = await db.getTodos()
+    res.status(201).json({ message: 'Todo Updated', updated: updatedTodo, todos: data.Items })
   } catch (error) {
     console.error('updateTodo error: ', error)
     next(error)
@@ -49,9 +51,14 @@ export const updateTodo: RequestHandler<{ id: string }> = async (req, res, next)
 export const deleteTodo: RequestHandler<{ id: string }> = async (req, res, next) => {
   try {
     const id = req.params.id
+    const text = (req.body as { text: string }).text
+    const dateCreated = (req.body as { dateCreated: number }).dateCreated
+    const completed = (req.body as { completed: boolean }).completed
+    const deletedTodo = new Todo(id, text, dateCreated, completed)
 
     await db.deleteTodo(id)
-    res.status(201).json({ message: 'Todo deleted', id })
+    const data = await db.getTodos()
+    res.status(201).json({ message: 'Todo deleted', deleted: deletedTodo, todos: data.Items })
   } catch (error) {
     console.error('deleteTodo error: ', error)
     next(error)
