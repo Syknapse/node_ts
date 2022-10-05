@@ -34,7 +34,7 @@ const App: React.FC = () => {
       <AddModal
         isOpen={isOpenModal}
         close={() => setIsOpenModal(false)}
-        addTodo={() => console.log('Adding todo .......')}
+        addTodo={value => console.log('Adding todo .......', value)}
       />
       <Button className="add-button" isRound onClick={() => setIsOpenModal(!isOpenModal)}>
         {isOpenModal ? <Cross className="add-icon" /> : <Add className="add-icon" />}

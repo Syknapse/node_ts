@@ -7,12 +7,13 @@ interface IButtonProps {
   className?: string
   disabled?: boolean
   isRound?: boolean
-  onClick: () => void
+  type?: 'button' | 'submit' | 'reset' | undefined
+  onClick?: (event?: React.MouseEvent) => void
 }
 
-const Button: React.FC<IButtonProps> = ({ children, className, disabled, isRound, onClick }) => {
+const Button: React.FC<IButtonProps> = ({ children, className, disabled, isRound, type, onClick }) => {
   return (
-    <button className={clsx(className, 'button', isRound && 'round')} disabled={disabled} onClick={onClick}>
+    <button className={clsx(className, 'button', isRound && 'round')} disabled={disabled} type={type} onClick={onClick}>
       {children}
     </button>
   )
