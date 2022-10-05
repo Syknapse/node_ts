@@ -1,5 +1,5 @@
 import AWS from 'aws-sdk'
-import { Todo } from './models/todo'
+import { Todo } from '../models/todoModel'
 
 AWS.config.update({
   region: process.env.AWS_DEFAULT_REGION,

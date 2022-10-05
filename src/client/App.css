@@ -1,0 +1,36 @@
+.title {
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  width: 100%;
+  padding: 2rem 0;
+  background: white;
+  box-shadow: 0px -2px 5px 3px rgb(152 137 137 / 39%);
+}
+
+.list {
+  margin: 2rem;
+  padding-top: 5.5rem;
+}
+
+.add-button {
+  position: fixed;
+  bottom: 3rem;
+  right: 2rem;
+  width: 4rem;
+  height: 4rem;
+  background: white;
+}
+
+.add-button::after {
+  content: '';
+  position: absolute;
+  width: 4rem;
+  height: 4rem;
+  background: radial-gradient(#85b8d25c, #8591d25e, #baafdb61, #e687e15e);
+  border-radius: 50%;
+  z-index: -1;
+}
