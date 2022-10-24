@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { Todo } from 'models/todoModel'
 import './button.css'
 
 interface IButtonProps {

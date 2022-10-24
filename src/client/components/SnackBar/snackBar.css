@@ -1,0 +1,38 @@
+.snackbar {
+  display: flex;
+  flex-wrap: wrap;
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  max-width: 26rem;
+  width: 60%;
+  min-height: 4rem;
+  border-radius: 8px;
+  background: rgb(140 94 197 / 83%);
+  padding: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+}
+
+.snackbar-undo {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  width: 5rem;
+}
+
+.snackbar-close {
+  position: absolute;
+  bottom: 4rem;
+  right: -1rem;
+  background: transparent;
+  border: none;
+  margin: 0.3rem;
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.snackbar-close svg {
+  height: 1.2rem;
+  width: 1.2rem;
+}

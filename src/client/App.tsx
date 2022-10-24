@@ -1,46 +1,69 @@
 import React, { useEffect, useState } from 'react'
 import { Todo } from 'models/todoModel'
 import * as API from './api/todos_api'
-import { AddModal, Button, TodoItem } from './components'
+import { AddModal, Button, TodoItem, SnackBar } from './components'
 import { Add, Cross } from './icons'
 import './App.css'
 
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([])
-  const [undoTodo, setUndoTodo] = useState<Todo | null>(null)
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
-  const [editingTodo, setEditingTodo] = useState<Todo | null>(null)
+  const [editedTodo, setEditedTodo] = useState<Todo | null>(null)
   const [value, setValue] = useState<string>('')
+  const [snackbarData, setSnackbarData] = useState<{ message: string; action?: () => void } | null>(null)
 
   useEffect(() => {
     getTodos()
   }, [])
 
+  const handleError = (message: string, name: string) => {
+    return console.error('API request error: ', message ? `${name}: ${message}` : 'Unknown error')
+  }
+
+  const displaySnackBar = (message: string, action?: () => void) => {
+    setSnackbarData({ message, action })
+    const timer = action ? 8000 : 3000
+    setTimeout(() => setSnackbarData(null), timer)
+  }
+
   const getTodos = async () => {
     const data = await API.getTodos()
-    if (data?.todos) setTodos(data.todos)
-    else console.log('getTodos error: ', data?.message ? `${data.name}: ${data.message}` : 'Unknown error')
+    if (data?.todos) {
+      setTodos(data.todos)
+    } else {
+      handleError(data?.message, data?.name)
+    }
   }
 
   const addTodo = async () => {
     const data = await API.addTodo(value)
-    if (data?.todos) setTodos(data.todos)
-    else console.log('addTodo error: ', data?.message ? `${data.name}: ${data.message}` : 'Unknown error')
+    if (data?.todos) {
+      setTodos(data.todos)
+      displaySnackBar('Todo added successfully!!')
+    } else {
+      handleError(data?.message, data?.name)
+    }
   }
 
-  const updateTodoCompleteness = async (todo: Todo) => {
+  const updateTodo = async (todo: Todo) => {
     const data = await API.updateTodo(todo)
-    if (data?.todos) setTodos(data.todos)
-    else
-      console.log('updateTodoCompleteness error: ', data?.message ? `${data.name}: ${data.message}` : 'Unknown error')
+    if (data?.todos) {
+      setTodos(data.todos)
+    } else {
+      handleError(data?.message, data?.name)
+    }
   }
 
   const updateTodoText = async () => {
-    if (editingTodo) {
-      const updatedTodo = { ...editingTodo, text: value }
+    if (editedTodo) {
+      const updatedTodo = { ...editedTodo, text: value }
       const data = await API.updateTodo(updatedTodo)
-      if (data?.todos) setTodos(data.todos)
-      else console.log('updateTodoText error: ', data?.message ? `${data.name}: ${data.message}` : 'Unknown error')
+      if (data?.todos) {
+        setTodos(data.todos)
+        displaySnackBar('Todo updated successfully!!')
+      } else {
+        handleError(data?.message, data?.name)
+      }
     }
   }
 
@@ -48,12 +71,12 @@ const App: React.FC = () => {
     const data = await API.deleteTodo(todo)
     if (data?.todos) {
       setTodos(data.todos)
-      setUndoTodo(data.deleted)
-    } else console.log('deleteTodo error: ', data?.message ? `${data.name}: ${data.message}` : 'Unknown error')
+      if (!!data.deleted) displaySnackBar('Todo deleted successfully!!', () => updateTodo(data.deleted))
+    } else handleError(data?.message, data?.name)
   }
 
   const handleEdit = (todo: Todo) => {
-    setEditingTodo(todo)
+    setEditedTodo(todo)
     setValue(todo.text)
     setIsOpenModal(true)
   }
@@ -61,7 +84,7 @@ const App: React.FC = () => {
   const handleClose = () => {
     setValue('')
     setIsOpenModal(false)
-    setEditingTodo(null)
+    setEditedTodo(null)
   }
 
   return (
@@ -75,7 +98,7 @@ const App: React.FC = () => {
             text={todo.text}
             dateCreated={todo.dateCreated}
             completed={todo.completed}
-            onToggleCompleteness={todo => updateTodoCompleteness(todo)}
+            onToggleCompleteness={todo => updateTodo(todo)}
             onEdit={todo => handleEdit(todo)}
             onDelete={todo => deleteTodo(todo)}
           />
@@ -85,13 +108,16 @@ const App: React.FC = () => {
         isOpen={isOpenModal}
         value={value}
         setValue={setValue}
-        editingTodo={editingTodo}
+        editedTodo={editedTodo}
         close={handleClose}
-        submit={editingTodo ? updateTodoText : addTodo}
+        submit={editedTodo ? updateTodoText : addTodo}
       />
       <Button className="add-button" isRound onClick={() => setIsOpenModal(!isOpenModal)}>
         {isOpenModal ? <Cross className="add-icon" /> : <Add className="add-icon" />}
       </Button>
+      {!!snackbarData && (
+        <SnackBar message={snackbarData?.message} action={snackbarData?.action} close={() => setSnackbarData(null)} />
+      )}
     </>
   )
 }

@@ -16,6 +16,13 @@
   padding-top: 5.5rem;
 }
 
+.list::after {
+  content: '';
+  width: 100%;
+  height: 10rem;
+  display: block;
+}
+
 .add-button {
   position: fixed;
   bottom: 3rem;
