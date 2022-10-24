@@ -1,10 +1,22 @@
 # Todo app (full stack)
 
-A full stack todo app with AWS Dynamo database, TypeScript Node.js backend, and React + Webpack + TypeScript for the frontend
+A full stack todo app with AWS Dynamo database, TypeScript, Node.js backend, and React + Webpack + TypeScript for the frontend.
+
+## Features
+
+- Create todos and save them to Dynamo database permanently.
+- Toggle completeness state
+- Edit todo text
+- Delete todo
+- Undo last delete within a short time limit
+- Snackbar notifications inform user of success
+- Fully responsive
 
 ## Run
 
 Install project with `npm install`
+
+IMPORTANT: project will not work without the environment variables installed locally
 
 Start TypeScript compiler watch mode `npx tsc -w` or `npm run watch` (this will create the /dist if it doesn't exist, which backend needs)
 
@@ -20,6 +32,14 @@ Add new todo : POST `http://localhost:8000/todos` body with text `{ "text": "exa
 View all todos: GET `http://localhost:8000/todos`  
 Edit a todo: PATCH `http://localhost:8000/todos/:id` body with all todo properties `{ "text": "modified text", "dateCreated": 1664352859365, "completed": true }`  
 Delete a todo: DELETE `http://localhost:8000/todos/:id` body with all todo properties `{ "text": "this will be deleted", "dateCreated": 1664352859365, "completed": true }`
+
+## Project to-dos
+
+- Sorting: Sort by date added. Drop completed to end of list
+- Manual sorting: Allow user to sort manually (drag and drop, create custom sorting)
+- Add loading states
+- Error modal to give feedback to user. Or use snackbar with a different color to display error messages
+- Add animations
 
 ## Documentation
 
