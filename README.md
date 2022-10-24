@@ -61,3 +61,5 @@ Delete a todo: DELETE `http://localhost:8000/todos/:id` body with all todo prope
 [CSS Loader](https://github.com/webpack-contrib/css-loader)
 
 More detailed notes about the development in the [Development Notes file](./dev-notes.md)
+
+2022
